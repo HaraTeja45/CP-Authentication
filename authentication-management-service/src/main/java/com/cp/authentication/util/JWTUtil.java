@@ -1,5 +1,6 @@
 package com.cp.authentication.util;
 
+import java.util.List;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +16,9 @@ public class JWTUtil {
 	@Value("${jwt.secret.key}")
 	private String secretKey;
 
-	public String generateJWTToken(String userName) {
+	public String generateJWTToken(String userName,List<String> roles) {
 
-		return Jwts.builder().claim("username", userName).issuedAt(new Date())
+		return Jwts.builder().claim("username", userName).claim("roles", roles).issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
 				.signWith(Keys.hmacShaKeyFor(secretKey.getBytes())).compact();
 
